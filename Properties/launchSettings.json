@@ -1,0 +1,15 @@
+{
+  "profiles": {
+    "K8sControlApi": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ENABLE_BASIC_AUTH": "true",
+        "BASIC_AUTH_USER": "admin",
+        "BASIC_AUTH_PASSWORD": "secret"
+      },
+      "applicationUrl": "https://localhost:51048;http://localhost:51049"
+    }
+  }
+}

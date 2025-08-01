@@ -1,0 +1,70 @@
+## Build output
+bin/
+obj/
+out/
+artifacts/
+
+## User-specific files
+*.user
+*.userosscache
+*.suo
+*.sln.docstates
+
+## Rider
+.idea/
+
+## VS Code
+.vscode/
+
+## OS-generated files
+.DS_Store
+Thumbs.db
+
+## Dotnet stuff
+project.lock.json
+project.fragment.lock.json
+*.dbmdl
+*.bak
+*.log
+
+## ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+## NuGet
+*.nupkg
+*.snupkg
+.nuget/
+packages/
+*.nuspec
+*.psmdcp
+
+## Logs
+*.log
+
+## Test results
+TestResults/
+*.coverage
+*.coveragexml
+*.codecoverage
+
+## Resharper
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+## Secrets / config
+secrets.json
+appsettings.Development.json
+
+## Dotnet tooling
+*.vs/
+.vsconfig
+
+# Ignore published output
+publish/
+
+## Global JetBrains IDE settings
+.idea/
+
+# Ignore config for dotnet tools
+.config/

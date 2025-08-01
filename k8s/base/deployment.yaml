@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: k8s-restart
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: k8s-restart
+  template:
+    metadata:
+      labels:
+        app: k8s-restart
+    spec:
+      serviceAccountName: k8s-restart
+      containers:
+      - name: k8s-restart
+        image: ghcr.io/gitopsmanager/k8s-restart:latest
+        ports:
+        - containerPort: 80
+        env:
+        - name: ENABLE_BASIC_AUTH
+          value: "true"
+        - name: BASIC_AUTH_USER
+          valueFrom:
+            secretKeyRef:
+              name: k8s-restart-auth
+              key: user
+        - name: BASIC_AUTH_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: k8s-restart-auth
+              key: password

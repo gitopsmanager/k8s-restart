@@ -5,7 +5,7 @@
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "ENABLE_BASIC_AUTH": "true",
+        "ENABLE_BASIC_AUTH": "false",
         "BASIC_AUTH_USER": "admin",
         "BASIC_AUTH_PASSWORD": "secret"
       },

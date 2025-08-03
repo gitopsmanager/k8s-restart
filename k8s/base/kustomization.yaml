@@ -5,3 +5,4 @@ resources:
 - service-account.yaml
 - cluster-role.yaml
 - cluster-role-binding.yaml
+- k8s-restart-auth.yaml

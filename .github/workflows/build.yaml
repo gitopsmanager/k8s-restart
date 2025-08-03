@@ -1,0 +1,51 @@
+name: Build and Push Public Image
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+    inputs:
+      version_tag:
+        description: 'Optional version tag (e.g. v1.0.0)'
+        required: false
+        type: string
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set image names
+        id: vars
+        run: |
+          IMAGE_BASE=ghcr.io/${{ github.repository_owner }}/k8s-restart
+          echo "IMAGE_LATEST=$IMAGE_BASE:latest" >> $GITHUB_OUTPUT
+          if [[ -n "${{ github.event.inputs.version_tag }}" ]]; then
+            echo "IMAGE_VERSION=$IMAGE_BASE:${{ github.event.inputs.version_tag }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Build once and tag
+        run: |
+          docker build -t ${{ steps.vars.outputs.IMAGE_LATEST }} .
+          if [ -n "${{ steps.vars.outputs.IMAGE_VERSION }}" ]; then
+            docker tag ${{ steps.vars.outputs.IMAGE_LATEST }} ${{ steps.vars.outputs.IMAGE_VERSION }}
+          fi
+
+      - name: Push all tags
+        run: |
+          docker push ${{ steps.vars.outputs.IMAGE_LATEST }}
+          if [ -n "${{ steps.vars.outputs.IMAGE_VERSION }}" ]; then
+            docker push ${{ steps.vars.outputs.IMAGE_VERSION }}
+          fi

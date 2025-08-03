@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: k8s-restart
+spec:
+  template:
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: sku
+                    operator: In
+                    values:
+                      - general
+      tolerations:
+        - key: "sku"
+          operator: "Equal"
+          value: "general"
+          effect: "NoSchedule"

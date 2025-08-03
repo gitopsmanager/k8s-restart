@@ -1,0 +1,12 @@
+resources:
+  - ../base
+
+patches:
+  - path: affinity-taint-patch.yaml
+    target:
+      kind: Deployment
+      name: k8s-restart
+  - path: env-secret-patch.yaml
+    target:
+      kind: Deployment
+      name: k8s-restart

@@ -18,5 +18,8 @@ COPY --from=build /app/publish .
 # Expose HTTP port
 EXPOSE 80
 
+# Tell ASP.NET to listen on all interfaces on port 80
+ENV ASPNETCORE_URLS=http://0.0.0.0:80
+
 # Entry point
 ENTRYPOINT ["dotnet", "K8sControlApi.dll"]

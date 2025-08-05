@@ -37,7 +37,7 @@ jobs:
           if [[ "${{ github.event_name }}" == "workflow_dispatch" && -n "${{ github.event.inputs.version_tag }}" ]]; then
             VERSION_TAG="${{ github.event.inputs.version_tag }}"
           else
-            VERSION_TAG="run-${{ github.run_id }}"
+            VERSION_TAG="${{ github.run_id }}"
           fi
 
           echo "IMAGE_VERSION=$IMAGE_BASE:$VERSION_TAG" >> $GITHUB_OUTPUT

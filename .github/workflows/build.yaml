@@ -32,20 +32,23 @@ jobs:
         run: |
           IMAGE_BASE=ghcr.io/${{ github.repository_owner }}/k8s-restart
           echo "IMAGE_LATEST=$IMAGE_BASE:latest" >> $GITHUB_OUTPUT
-          if [[ -n "${{ github.event.inputs.version_tag }}" ]]; then
-            echo "IMAGE_VERSION=$IMAGE_BASE:${{ github.event.inputs.version_tag }}" >> $GITHUB_OUTPUT
+
+          # Determine version tag
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" && -n "${{ github.event.inputs.version_tag }}" ]]; then
+            VERSION_TAG="${{ github.event.inputs.version_tag }}"
+          else
+            VERSION_TAG="run-${{ github.run_id }}"
           fi
+
+          echo "IMAGE_VERSION=$IMAGE_BASE:$VERSION_TAG" >> $GITHUB_OUTPUT
 
       - name: Build once and tag
         run: |
           docker build -t ${{ steps.vars.outputs.IMAGE_LATEST }} .
-          if [ -n "${{ steps.vars.outputs.IMAGE_VERSION }}" ]; then
-            docker tag ${{ steps.vars.outputs.IMAGE_LATEST }} ${{ steps.vars.outputs.IMAGE_VERSION }}
-          fi
+          docker tag ${{ steps.vars.outputs.IMAGE_LATEST }} ${{ steps.vars.outputs.IMAGE_VERSION }}
 
       - name: Push all tags
         run: |
           docker push ${{ steps.vars.outputs.IMAGE_LATEST }}
-          if [ -n "${{ steps.vars.outputs.IMAGE_VERSION }}" ]; then
-            docker push ${{ steps.vars.outputs.IMAGE_VERSION }}
-          fi
+          docker push ${{ steps.vars.outputs.IMAGE_VERSION }}
+

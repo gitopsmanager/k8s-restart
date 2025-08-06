@@ -13,6 +13,7 @@ spec:
       labels:
         app: k8s-restart
     spec:
+      serviceAccountName: k8s-restart 
       containers:
       - name: k8s-restart
         image: ghcr.io/gitopsmanager/k8s-restart:latest

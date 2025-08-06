@@ -17,7 +17,7 @@ spec:
       - name: k8s-restart
         image: ghcr.io/gitopsmanager/k8s-restart:latest
         ports:
-        - containerPort: 80
+        - containerPort: 5000
         env:
         - name: ENABLE_BASIC_AUTH
           value: "false"

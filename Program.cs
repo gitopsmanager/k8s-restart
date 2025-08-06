@@ -4,13 +4,14 @@ using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using Microsoft.Extensions.Options;
-
+using K8sControlApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 var enableAuth = Environment.GetEnvironmentVariable("ENABLE_BASIC_AUTH")?.ToLower() == "true";
 
 builder.Services.AddControllers();
+builder.Services.AddSingleton<K8sService>();  // ✅ Add K8sService to DI
 builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerGen(c =>
@@ -21,7 +22,7 @@ builder.Services.AddSwaggerGen(c =>
         {
             Name = "Authorization",
             Type = SecuritySchemeType.Http,
-            Scheme = "basic",
+            Scheme = "basic", // ✅ Match this
             In = ParameterLocation.Header,
             Description = "Basic Authentication"
         });
@@ -41,16 +42,14 @@ builder.Services.AddSwaggerGen(c =>
 
 if (enableAuth)
 {
-    builder.Services.AddAuthentication("BasicAuthentication")
-        .AddScheme<AuthenticationSchemeOptions, BasicAuthHandler>("BasicAuthentication", null);
+    builder.Services.AddAuthentication("basic") // ✅ Match scheme name used in Swagger
+        .AddScheme<AuthenticationSchemeOptions, BasicAuthHandler>("basic", null);
 }
 
 var app = builder.Build();
 
-
 app.UseSwagger();
 app.UseSwaggerUI();
-
 
 if (enableAuth)
 {

@@ -48,7 +48,7 @@ public class K8sService
                 try
                 {
                     var lastApplied = JsonSerializer.Deserialize<V1Deployment>(json);
-                    replicas = lastApplied?.Spec?.Replicas;
+                    replicas = lastApplied?.Spec?.Replicas ?? 0;
                 }
                 catch { }
             }
@@ -119,7 +119,7 @@ public class K8sService
             try
             {
                 var lastApplied = JsonSerializer.Deserialize<V1Deployment>(json);
-                replicas = lastApplied?.Spec?.Replicas;
+                replicas = lastApplied?.Spec?.Replicas ?? 0;
             }
             catch { }
         }

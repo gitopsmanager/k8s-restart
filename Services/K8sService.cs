@@ -41,14 +41,14 @@ public class K8sService
         var deployments = await _client.AppsV1.ListNamespacedDeploymentAsync(ns);
         foreach (var dep in deployments.Items)
         {
-            int replicas = 1;
+            int replicas = 0;
             if (dep.Metadata.Annotations != null &&
                 dep.Metadata.Annotations.TryGetValue("kubectl.kubernetes.io/last-applied-configuration", out var json))
             {
                 try
                 {
                     var lastApplied = JsonSerializer.Deserialize<V1Deployment>(json);
-                    replicas = lastApplied?.Spec?.Replicas ?? 1;
+                    replicas = lastApplied?.Spec?.Replicas;
                 }
                 catch { }
             }
@@ -112,14 +112,14 @@ public class K8sService
     {
         var dep = await _client.AppsV1.ReadNamespacedDeploymentAsync(deployment, ns);
 
-        int replicas = 1;
+        int replicas = 0;
         if (dep.Metadata.Annotations != null &&
             dep.Metadata.Annotations.TryGetValue("kubectl.kubernetes.io/last-applied-configuration", out var json))
         {
             try
             {
                 var lastApplied = JsonSerializer.Deserialize<V1Deployment>(json);
-                replicas = lastApplied?.Spec?.Replicas ?? 1;
+                replicas = lastApplied?.Spec?.Replicas;
             }
             catch { }
         }
